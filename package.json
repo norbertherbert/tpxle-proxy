@@ -8,6 +8,7 @@
   },
   "author": "Norbert Herbert",
   "license": "ISC",
+  "repository": "https://github.com/norbertherbert/tpxle-proxy.git",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
