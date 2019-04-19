@@ -17,7 +17,6 @@ npm install
 * Edit 
 [/config/token_template.js](https://github.com/norbertherbert/tpxle-proxy/blob/master/config/token_template.js)
 , add your ThingPark DX API token and save it as /config/token.js 
-
 * Edit
 [/config/config.js](https://github.com/norbertherbert/tpxle-proxy/blob/master/config/config.js)
 , update the server URLs and save it.
