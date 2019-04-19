@@ -1,14 +1,12 @@
 # tpxle-proxy
-Actility ThingPark X Location Engine Proxy for foreign Network Servers
-
-For more details please study 
-[/docs/DX_Location_API_Integration_V1.0.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_Integration_v1.0.pdf)
+'tpxle-proxy' is an API proxy for Actility ThingPark X Location Engine to connect foreign Network Servers (it is also called Operator Interface). For details please study 
+[/docs/DX_Location_API_Integration_V1.0.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_Integration_v1.0.pdf).
 
 ### Installation:
 * Install and configure dependencies: 
 [nodejs](https://nodejs.org/), 
 [mongodb](https://docs.mongodb.com/manual/installation/)
-* Use the following commands to install the proxy server
+* Install the proxy server:
 ```bash
 git clone https://github.com/norbertherbert/tpxle-proxy.git
 cd tpxle-proxy
@@ -26,7 +24,7 @@ npm install
 ```bash
 node server.js
 ```
-or if you want to test and see the API Docs with swagger-ui (with Open API Specification v3):
+or if you want to test and see the API Docs with swagger-ui (according to Open API Specification v3):
 ```bash
 node serverOAS.js
 ```
