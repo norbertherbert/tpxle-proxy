@@ -1,4 +1,7 @@
-// Function that converts messages of the Network Server to the format of the Location Solver
+
+// This function converts messages of the Network Server 
+// to the format of the Location Solver
+
 let ns2ls = (body) => {
     let feeds = {
         // deviceEUI: "",                                     // mandatory
@@ -104,7 +107,9 @@ let ns2ls = (body) => {
 
 }
 
-// Function that converts messages of the Location Solver to the format of the Network Server
+// This function converts messages of the Location Solver to
+// the format of the Network Server
+
 let ls2ns = (body) => {
     // Operator Interface for downlink packets is not implemented yet
     return undefined;

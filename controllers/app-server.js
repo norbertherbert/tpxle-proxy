@@ -1,7 +1,7 @@
 const mc = require('mongodb').MongoClient;
 const assert = require('assert');
 
-const CONFIG = require('../config');
+const CONFIG = require('../config/config.js');
 const dbCollName = 'loc_history';
 
 module.exports.saveResolvedLocation = function lsResolvedLocation (req, res, next) {
