@@ -5,9 +5,10 @@ For more details please study
 [/docs/DX_Location_API_Integration_V1.0.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_Integration_v1.0.pdf)
 
 ### Installation:
-Prerequisits: 
+* Install and configure dependencies: 
 [nodejs](https://nodejs.org/), 
 [mongodb](https://docs.mongodb.com/manual/installation/)
+* Use the following commands to install the proxy server
 ```bash
 git clone https://github.com/norbertherbert/tpxle-proxy.git
 cd tpxle-proxy
@@ -21,7 +22,7 @@ npm install
 [/config/config.js](https://github.com/norbertherbert/tpxle-proxy/blob/master/config/config.js)
 , update the server URLs and save it.
 
-### Strat the server
+### Strat the server:
 ```bash
 node server.js
 ```
