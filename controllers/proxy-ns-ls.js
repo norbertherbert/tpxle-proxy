@@ -1,6 +1,6 @@
 const https = require("https");
 
-const CONFIG = require('../config/config.js');
+const CONFIG = require('../config/config');
 
 const interfaceActility = require('./interface-actility');
 const interfaceTTN = require('./interface-ttn');

@@ -12,6 +12,8 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongodb": "^3.2.2"
+    "js-yaml": "^3.13.1",
+    "mongodb": "^3.2.2",
+    "oas-tools": "^2.1.5"
   }
 }
