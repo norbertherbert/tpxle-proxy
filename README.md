@@ -26,3 +26,7 @@ npm install
 ```bash
 node server.js
 ```
+or if you want to test and see the API Docs with swagger-ui (with Open API Specification v3):
+```bash
+node serverOAS.js
+```
