@@ -18,7 +18,7 @@ const oasDoc = jsyaml.safeLoad(spec);
 const oasOptions = {
 
 	controllers: path.join(__dirname, './controllers'),
-	checkControllers: false,
+	checkControllers: true,
 
 	loglevel: 'info',
 

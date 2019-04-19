@@ -5,10 +5,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // The code that describes the proxy between NS and Location Solver
-const proxyNsLs = require('./controllers/proxy-ns-ls');
+const proxyNsLs = require('./controllers/proxy_ns_ls');
 
 // The code that describes the Application Server that stores resolved location in DB
-const appServer = require('./controllers/app-server');
+const appServer = require('./controllers/app_server');
 
 const app = express();
 

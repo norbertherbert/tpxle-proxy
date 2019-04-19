@@ -22,7 +22,7 @@ paths:
         - Application Server
       summary: Receive resolved location from ThingPark Location Solver
       description: This endpoint receives resolved location from ThingPark Location Solver and saves it in the servers DB.
-      x-swagger-router-controller: app-server
+      x-swagger-router-controller: appServer
       operationId: saveResolvedLocation
       requestBody:
         description: The message body sent by the ThingPark Location Solver.
@@ -65,7 +65,7 @@ paths:
         - Network Servers
       summary: Receive uplinlk message from Actility Network Server
       description: This endpoint receives an uplink message from Actility Network Server, transforms it to the right format and forwards it to ThingPark Location Solver.
-      x-swagger-router-controller: proxy-ns-ls
+      x-swagger-router-controller: proxyNsLs
       operationId: uplinkActility
       parameters:
         - name: AS_ID
@@ -141,7 +141,7 @@ paths:
         - Network Servers
       summary: Receive uplinlk message from TTN Network Server
       description: This endpoint receives an uplink message from TTN Network Server, transforms it to the right format and forwards it to ThingPark Location Solver.
-      x-swagger-router-controller: proxy-ns-ls
+      x-swagger-router-controller: proxyNsLs
       operationId: uplinkTTN
       requestBody:
         description: The message body sent by the Network Server.
@@ -183,7 +183,7 @@ paths:
         - Network Servers
       summary: Receive uplinlk message from Loriot Network Server
       description: This endpoint receives an uplink message from Loriot Network Server, transforms it to the right format and forwards it to ThingPark Location Solver.
-      x-swagger-router-controller: proxy-ns-ls
+      x-swagger-router-controller: proxyNsLs
       operationId: uplinkLoriot
       requestBody:
         description: The message body sent by the Network Server.
@@ -823,7 +823,7 @@ components:
         ts: 
           description: server timestamp as number (miliseconds from Linux epoch)
           type: integer
-          example: ''
+          example: 1
         ack: 
           description: NEW! acknowledgement flag as set by device
           type: boolean
@@ -831,7 +831,7 @@ components:
         fcnt: 
           description: frame counter, a 32-bit number
           type: integer
-          example: '17'
+          example: 17
         port: 
           description: port as sent by the end device
           type: integer
