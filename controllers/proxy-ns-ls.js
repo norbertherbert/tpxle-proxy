@@ -35,7 +35,7 @@ module.exports.downlinkLoriot = function downlinkLoriot (req, res, next) {
 
 function forward (res, forwardBody, forwardOptions) {
     if (!forwardBody) {
-        res.sendStatus(400);
+        res.status(400).send({message: {text: 'The message received from the NS cannot be transformed for the Loc Solver.', code: 400}});
         console.log(`The message received from the NS cannot be transformed for the Loc Solver.`);
         return;
     }
@@ -52,12 +52,13 @@ function forward (res, forwardBody, forwardOptions) {
             console.log(forwardResString);
             console.log();
         
-            res.sendStatus(200);
+            res.status(200).send({message: {text:'RESPONSE RECEIVED FROM FORWARD DESTINATION.', code: 200}});
+
         });
     });
     forwardReq.on('error', (err) => {
-        console.error(`Problem with forwardedRequest: ${err.message}`);
-        res.sendStatus(200);
+        console.error(`There was a problem with the forwardedRequest: ${err.message}`);
+        res.status(200).send({message: {text: `There was a problem with the forwardedRequest: ${err.message}`, code: 200}});
     });
     let forwardBodyJSON = JSON.stringify(forwardBody, null, 4);
     forwardReq.write(forwardBodyJSON);
