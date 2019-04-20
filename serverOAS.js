@@ -1,23 +1,21 @@
 'use strict';
 
-const CONFIG = require('./config/config');
-
 const fs = require('fs');
-const path = require('path');
+const appRoot = require('app-root-path');
 const bodyParser = require('body-parser');
 const jsyaml = require('js-yaml');
 const express = require("express");
 const oasTools = require('oas-tools');
-// const morgan = require('morgan');
 
-const app = express();
+const logger = require(`${appRoot}/config/logger`);
+const CONFIG = require(`${appRoot}/config/config`);
 
-const spec = fs.readFileSync(path.join(__dirname, 'api/oas-doc.yaml'), 'utf8');
+const spec = fs.readFileSync(`${appRoot}/api/oas-doc.yaml`, 'utf8');
 const oasDoc = jsyaml.safeLoad(spec);
 
 const oasOptions = {
 
-	controllers: path.join(__dirname, './controllers'),
+	controllers: `${appRoot}/controllers`,
 	checkControllers: true,
 
 	loglevel: 'info',
@@ -43,7 +41,9 @@ const oasOptions = {
 
 };
 
-// This sets access control origin to *
+const app = express();
+
+// This sets access control origin to * that helps testing java script apps from localhost
 app.options(`${CONFIG.server.path}/*`, function(req, res) {
 	res.set({
 		'Access-Control-Allow-Origin': '*',
@@ -52,7 +52,6 @@ app.options(`${CONFIG.server.path}/*`, function(req, res) {
 	});
 	res.status(201).end();
 });
-
 app.use(`${CONFIG.server.path}/*`, function(req, res, next) {
 	res.set({
 		'Access-Control-Allow-Origin': '*',
@@ -62,22 +61,19 @@ app.use(`${CONFIG.server.path}/*`, function(req, res, next) {
 	next();
 });
 
-
 app.use(bodyParser.json({
 	strict: false
 }));
-
-// app.use(morgan('combined'));
 
 oasTools.configure(oasOptions);
 
 oasTools.initialize(oasDoc, app, function() {
 	app.listen(CONFIG.server.port, function() {
-		console.log(
+		logger.info(
 			'App running at http://localhost:' 
 			+ CONFIG.server.port
 		);
-		console.log(
+		logger.info(
 			'API docs (Swagger UI) available on http://localhost:'
 			+ CONFIG.server.port 
 			+ oasOptions.docs.swaggerUiPrefix

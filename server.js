@@ -1,8 +1,9 @@
-
-const CONFIG = require('./config/config');
-
 const express = require('express');
 const bodyParser = require('body-parser');
+const appRoot = require('app-root-path');
+
+const logger = require(`${appRoot}/config/logger`);
+const CONFIG = require(`${appRoot}/config/config`);
 
 // The code that describes the proxy between NS and Location Solver
 const proxyNsLs = require('./controllers/proxyNsLs');
@@ -72,8 +73,8 @@ app.post(
 
 // Start the server
 app.listen(CONFIG.server.port, () => {
-    console.log(`Server is listening on port ${CONFIG.server.port}`);
-    console.log(
+    logger.info(`Server is listening on port ${CONFIG.server.port}`);
+    logger.info(
         'App running at http://localhost:' 
         + CONFIG.server.port
         + CONFIG.server.path

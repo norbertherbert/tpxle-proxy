@@ -10,10 +10,12 @@
   "license": "ISC",
   "repository": "https://github.com/norbertherbert/tpxle-proxy.git",
   "dependencies": {
+    "app-root-path": "^2.2.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "js-yaml": "^3.13.1",
     "mongodb": "^3.2.2",
-    "oas-tools": "^2.1.5"
+    "oas-tools": "^2.1.5",
+    "winston": "^3.2.1"
   }
 }
