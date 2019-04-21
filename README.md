@@ -25,13 +25,15 @@ After installation, you should delete the '/node_modules/oas-tools/.git' directo
 ```bash
 npm start
 ```
+### Make the server available from the Internet
+* Set up a reverse proxy (e.g.: configure your nginx web server) so that the internal port of your app is mapped to a sub-path of your web server. (e.g.: https://your.domain.com/yourpath/tpxle-proxy.
 ### Set up uplink routing
 * Open the Swagger-UI web page that's URL is printed on the console after the server has been started.
 * Note in the swagger documentation that
     * Uplink messages from Actility network server should be forwarded the 'POST /uplink_actility' endpoint.
     * Uplink messages from TTN network server should be forarded to the 'POST /uplink_ttn' endpoint.
     * Uplink messages from Loriot network server should be forwarded to the 'POST /uplink_loriot' endpoint.
-* Configure the Connector Module of ThingPark X Location API so that resolved locations are sent to the 'POST /app_server' endpoint. 
+* Configure the Connector Module of ThingPark X Location API so that resolved locations are sent to the 'POST /app_server' endpoint.
 ### Test the server
 * Make your tracker to send a few location updates. (E.g.: Shake the tracker if it is configured for Movement Tracking.)
 * Check the logs either in the console or in the '/logs' directory.
