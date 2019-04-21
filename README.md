@@ -12,6 +12,7 @@ git clone https://github.com/norbertherbert/tpxle-proxy.git
 cd tpxle-proxy
 npm install
 ```
+After installation, you should delete the '/node_modules/oas-tools/.git' directory otherwise you always get a '/node_modules/oas-tools/ is a git repository' error message whenever you use the 'mpn install' command. (Don't touch the /.git directory in the root folder!)
 ### Configuration:
 * Edit 
 [/config/token_template.js](https://github.com/norbertherbert/tpxle-proxy/blob/master/config/token_template.js)
@@ -22,9 +23,16 @@ npm install
 
 ### Strat the server:
 ```bash
-node server.js
+npm start
 ```
-or if you want to test and see the API Docs with swagger-ui (according to Open API Specification v3):
-```bash
-node serverOAS.js
-```
+### Set up uplink routing
+* Open the Swagger-UI web page that's URL is printed on the console after the server has been started
+* Note in the swagger documentation that
+** Uplink messages from Actility network server should be forwarded the 'POST /uplink_actility' endpoint
+** Uplink messages from TTN network server should be forarded to the 'POST /uplink_ttn' endpoint
+** Uplink messages from Loriot network server should be forwarded to the 'POST /uplink_loriot' endpoint
+* Configure the Connector Module of ThingPark X Location API so that resolved locations are sent to the 'POST /app_server' endpoint. 
+### Test the server
+* Make your tracker to send a few location updates. (E.g.: Shake the tracker if it is configured for Movement Tracking.)
+* Check the logs either in the console or in the /logs directory
+* You can also use the 'GET /app_server' endpoint (on Swagger-UI) to query the most recent location messages received from the Location Sorver 

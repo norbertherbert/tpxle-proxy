@@ -1,83 +1,83 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+'use strict';
+
+const fs = require('fs');
 const appRoot = require('app-root-path');
+const bodyParser = require('body-parser');
+const jsyaml = require('js-yaml');
+const express = require("express");
+const oasTools = require('oas-tools');
 
 const logger = require(`${appRoot}/config/logger`);
 const CONFIG = require(`${appRoot}/config/config`);
 
-// The code that describes the proxy between NS and Location Solver
-const proxyNsLs = require('./controllers/proxyNsLs');
+const spec = fs.readFileSync(`${appRoot}/api/oas-doc.yaml`, 'utf8');
+const oasDoc = jsyaml.safeLoad(spec);
 
-// The code that describes the Application Server that stores resolved location in DB
-const appServer = require('./controllers/appServer');
+const oasOptions = {
+
+	controllers: `${appRoot}/controllers`,
+	checkControllers: true,
+
+	loglevel: 'info',
+
+	router: true,
+
+	validator: true,
+	strict: false,
+	ignoreUnknownFormats: true,
+
+	docs: {
+		apiDocs: '/api-docs',
+		apiDocsPrefix: CONFIG.server.path,
+		swaggerUi: '/docs',
+		swaggerUiPrefix: CONFIG.server.path
+	},
+
+	oasSecurity: false,
+	securityFile: null,
+
+	oasAuth: false,
+	grantsFile: null,
+
+};
 
 const app = express();
 
-app.use(bodyParser.json());
-
-// This is just to allow testing if the server is up and running
-app.get(CONFIG.server.path, (req, res) => {
-    res.json({"message": "Welcome to the TPX Location Engine Proxy application"});
+// This sets access control origin to * that helps testing java script apps from localhost
+app.options(`${CONFIG.server.path}/*`, function(req, res) {
+	res.set({
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
+		'Access-Control-Allow-Headers': 'Authorization, Content-Type', 
+	});
+	res.status(201).end();
+});
+app.use(`${CONFIG.server.path}/*`, function(req, res, next) {
+	res.set({
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
+		'Access-Control-Allow-Headers': 'Authorization, Content-Type', 
+	});
+	next();
 });
 
+app.use(bodyParser.json({
+	strict: false
+}));
 
-// Receives uplink messages from Actility Network Server that
-// should be forwarded to Location Solver
-app.post(
-    `${CONFIG.server.path}/uplink_actility`,
-    proxyNsLs.uplinkActility
-);
+oasTools.configure(oasOptions);
 
-// Receives downlink message from Location Solver that 
-// should be transformed and forwarded to Actility Network Server
-app.post(
-    `${CONFIG.server.path}/downlink_actility`,
-    proxyNsLs.downlinkActility
-);
-
-// Receives uplink messages from TTN Network Server that
-// should be forwarded to Location Solver
-app.post(
-    `${CONFIG.server.path}/uplink_ttn`,
-    proxyNsLs.uplinkTTN
-);
-
-// Receives downlink message from Location Solver that 
-// should be transformed and forwarded to TTN Network Server
-app.post(
-    `${CONFIG.server.path}/downlink_ttn`,
-    proxyNsLs.downlinkTTN
-);
-
-// Receives uplink messages from Loriot Network Server that
-// should be forwarded to Location Solver
-app.post(
-    `${CONFIG.server.path}/uplink_loriot`,
-    proxyNsLs.uplinkLoriot
-);
-
-// Receives downlink message from Location Solver that 
-// should be transformed and forwarded to Loriot Network Server
-app.post(
-    `${CONFIG.server.path}/downlink_loriot`,
-    proxyNsLs.downlinkLoriot
-);
-
-// Receives resolved location from Location Solver that 
-// should be stored in DB
-app.post(
-    `${CONFIG.server.path}/app_server`,
-    appServer.saveResolvedLocation
-);
-
-
-// Start the server
-app.listen(CONFIG.server.port, () => {
-    logger.info(`Server is listening on port ${CONFIG.server.port}`);
-    logger.info(
-        'App running at http://localhost:' 
-        + CONFIG.server.port
-        + CONFIG.server.path
-    );
-
+oasTools.initialize(oasDoc, app, function() {
+	app.listen(CONFIG.server.port, function() {
+		logger.info(
+			'App running at http://localhost:' 
+			+ CONFIG.server.port
+		);
+		logger.info(
+			'API docs (Swagger UI) available on http://localhost:'
+			+ CONFIG.server.port 
+			+ oasOptions.docs.swaggerUiPrefix
+			+ oasOptions.docs.swaggerUi
+		);
+	})
 });

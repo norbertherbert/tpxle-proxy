@@ -25,3 +25,30 @@ module.exports.saveResolvedLocation = function saveResolvedLocation (req, res, n
         })
     });
 }
+
+module.exports.listResolvedLocations = function listResolvedLocations (req, res, next) {
+    console.log(req.query);
+    mc.connect(CONFIG.db.dbUrl, CONFIG.db.dbOptions, function(err, client) {
+        if (err) {
+            res.status(500).send({message: {text: `MongoError: ${err.message}`, code:500}});
+            logger.error(`MongoError: ${err.message}`);
+            return;
+        }
+
+        const filter = req.query;
+        client.db(CONFIG.db.dbName).collection(dbCollName).find(filter).sort({natural: -1}).limit(25).toArray( (err, result) => {
+            if (err) {
+                res.status(500).send({message: {text: `MongoError: ${err.message}`, code:500}});
+                logger.error(`MongoError: ${err.message}`);
+                return;
+            }
+            res.status(200).send(result);
+            client.close();
+
+            logger.info('RESOLVED LOCATION LIST RETREIVED FROM DB');
+            // logger.debug(JSON.stringify(result));
+
+        })
+
+    });
+}

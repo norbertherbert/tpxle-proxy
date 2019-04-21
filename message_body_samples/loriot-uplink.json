@@ -1,9 +1,9 @@
 {
     "cmd": "rx",
     "EUI": "0011223344556677",
-    "ts": "",
+    "ts": 1,
     "ack": false,
-    "fcnt": "17",
+    "fcnt": 17,
     "port": 1554027678278,
     "encdata": "af234b",
     "data": "aabbcc11",

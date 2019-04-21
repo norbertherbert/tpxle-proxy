@@ -43,10 +43,70 @@ let ns2ls = (body) => {
         }
     }
 
-    // Operator Interface for uplink packets is not implemented yet
-    return undefined;
+    if ('EUI' in body) { 
+        feeds.deviceEUI = body.EUI; 
+    }
+    else { 
+        return undefined; 
+    }
+
+    if ('ts' in body) {
+        let date = new Date(body.ts);
+        feeds.time = date.toISOString();
+    }
+
+    if ('fcnt' in body) { 
+        feeds.solverInput.sequenceNumber = body.fcnt; 
+    }
+    if ('port' in body) { 
+        feeds.solverInput.port = body.port 
+    }
+
+    if ('ts' in body) {
+        let date = new Date(body.ts);
+        feeds.solverInput.receptionTime = date.toISOString();
+    }
+
+    if ('dr' in body) { 
+        feeds.solverInput.SF = parseInt(body.dr.substring(2,4)); // 'SF12 BW125 4/5'
+    }
+
+    let packet = {};
+
+    // if ('gtw_id' in body) { 
+    //     packet.baseStationId = body.gtw_id; 
+    // } 
+
+    if ('snr' in body) { 
+        packet.SNR = body.snr; 
+    }
+    if ('rssi' in body) { 
+        packet.RSSI = body.rssi; 
+    }
+
+    // if ( 
+    //     ('longitude' in body && 
+    //     ('latitude' in body) 
+    // ) {
+    //     packet.antennaCoordinates = [ 
+    //         body.longitude,
+    //         body.latitude
+    //     ];
+    //     if ('altitude' in body) {
+    //         packet.antennaCoordinates.push(body.altitude);
+    //     }
+    // }
+
+    feeds.solverInput.packets.push(packet);
+
+    if ('data' in body) { 
+        feeds.payload.payloadEncoded = body.data; 
+    }
+
+    return feeds;
 
 }
+
 
 // This function converts messages of the Location Solver to
 // the format of the Network Server
