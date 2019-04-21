@@ -27,6 +27,8 @@ npm start
 ```
 ### Make the server available from the Internet
 * Set up a reverse proxy (e.g.: configure your nginx web server) so that the internal port of your app is mapped to a sub-path of your web server. (e.g.: https://your.domain.com/yourpath/tpxle-proxy.
+* If you want to test your public API with Swagger-UI, edit the
+[/api/oas-doc.yaml](https://github.com/norbertherbert/tpxle-proxy/blob/master/api/oas-doc.yaml) file and add your url to the 'servers' section.
 ### Set up uplink routing
 * Open the Swagger-UI web page that's URL is printed on the console after the server has been started.
 * Note in the swagger documentation that
