@@ -1,6 +1,6 @@
 # tpxle-proxy
 'tpxle-proxy' is an API proxy for Actility ThingPark X Location Engine to connect foreign Network Servers (it is also called Operator Interface). For details please study 
-[/docs/DX_Location_API_Integration_V1.0.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_Integration_v1.0.pdf).
+[/docs/DX_Location_API_flows_v1.1.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_flows_v1.1.pdf).
 
 ### Installation:
 * Install and configure dependencies: 
