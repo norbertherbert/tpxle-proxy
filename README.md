@@ -2,6 +2,8 @@
 'tpxle-proxy' is an API proxy for Actility ThingPark X Location Engine to connect foreign Network Servers (it is also called Operator Interface). For details please study 
 [/docs/DX_Location_API_Integration_V1.0.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_Integration_v1.0.pdf).
 
+If you want to test this server without installing it on your cloud, visit this [link](https://nano-things.net/tpxle-proxy/docs/). Please note that the server under that link is operated in a best effort manner and may not be awailable all the time.
+
 ### Installation:
 * Install and configure dependencies: 
 [nodejs](https://nodejs.org/), 
@@ -20,6 +22,9 @@ After installation, you should delete the '/node_modules/oas-tools/.git' directo
 * Edit
 [/config/config.js](https://github.com/norbertherbert/tpxle-proxy/blob/master/config/config.js)
 , update the server URLs and save it.
+* If you want to collect your logs in the '/logs/server.log' file, edit 
+[/config/logger.js](https://github.com/norbertherbert/tpxle-proxy/blob/master/config/logger.js)
+, and uncomment the '// new transports.File(options.file),' line.
 
 ### Strat the server:
 ```bash
