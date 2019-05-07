@@ -70,8 +70,10 @@ oasTools.configure(oasOptions);
 oasTools.initialize(oasDoc, app, function() {
 	app.listen(CONFIG.server.port, function() {
 		logger.info(
-			'App running at http://localhost:' 
+			'API server is running at http://localhost:' 
 			+ CONFIG.server.port
+			+ oasOptions.docs.swaggerUiPrefix
+			+ '/latest/api'
 		);
 		logger.info(
 			'API docs (Swagger UI) available on http://localhost:'

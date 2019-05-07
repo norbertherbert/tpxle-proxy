@@ -4,9 +4,9 @@ info:
   title: TPX LE proxy
   description: Interface proxy between ThingPark X Location Engine and different types of LoRaWAN Network Servers
 servers:
-  - url: 'https://nano-things.net/tpxle-proxy'
+  - url: 'https://nano-things.net/tpxle-proxy/latest/api'
     description: Demo server
-  - url: 'http://localhost:8086/tpxle-proxy'
+  - url: 'http://localhost:8086/tpxle-proxy/latest/api'
     description: Local test server
 tags:
   - name: Application Server
