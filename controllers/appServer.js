@@ -36,7 +36,7 @@ module.exports.listResolvedLocations = function listResolvedLocations (req, res,
         }
 
         const filter = req.query;
-        client.db(CONFIG.db.dbName).collection(dbCollName).find(filter).sort({natural: -1}).limit(25).toArray( (err, result) => {
+        client.db(CONFIG.db.dbName).collection(dbCollName).find(filter).sort({$natural: -1}).limit(25).toArray( (err, result) => {
             if (err) {
                 res.status(500).send({message: {text: `MongoError: ${err.message}`, code:500}});
                 logger.error(`MongoError: ${err.message}`);
