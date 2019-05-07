@@ -93,8 +93,8 @@ let ns2ls = (body) => {
             }
             if ( ('LrrLAT' in lrr[i]) && ('LrrLON' in lrr[i]) ) {
                 packet.antennaCoordinates = [
+                    lrr[i].LrrLON,
                     lrr[i].LrrLAT, 
-                    lrr[i].LrrLON
                 ]; 
             } else if (
                 ('Lrrid' in body ) &&
@@ -103,8 +103,8 @@ let ns2ls = (body) => {
                 ('LrrLON' in body) 
             ) {
                 packet.antennaCoordinates = [
+                    body.LrrLON,
                     body.LrrLAT, 
-                    body.LrrLON
                 ];
             }
             feeds.solverInput.packets.push(packet);
