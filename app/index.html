@@ -16,6 +16,7 @@
     }
     #map-header, #map-footer{
       position: absolute;
+      left: 5px;
       background-color: rgba(255, 255, 255, 0.5);
       padding: 5px;
       display: flex;
@@ -24,11 +25,9 @@
       align-items: center;
     }
     #map-header {
-      left: 55px;
       top: 10px;
     }
     #map-footer {
-      left: 5px;
       bottom: 5px;
     }
     .ui-element {
@@ -45,25 +44,32 @@
     }
     #data-container {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #ffffff;
-      margin: 10px;
+      top: 0px;
+      left: 0px;
+      margin: 0px;
       padding: 10px;
+      height: 100vh;
+      width: 100%;
+      box-sizing: border-box;
+      background-color:  rgba(255, 255, 255, 0.7);
       border-style: solid;
       border-width: 1px;
       display: none;
       overflow-y: scroll; 
       overflow-x: scroll;
-      height: 90vh;
-      max-width: 80%;
     }
     #hide-data-container {
-      position: absolute;
+      position: fixed;
       top: 10px;
-      right: 10px;
+      right: 20px;
     }
-    </style>
+    .ol-zoom {
+      left: unset;
+      top: unset;
+      right: 5px;
+      bottom: 25px;
+    }
+  </style>
   <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
   <title>TPXLE Demo</title>
 </head>
