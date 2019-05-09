@@ -31,9 +31,11 @@
       left: 5px;
       bottom: 5px;
     }
-    button {
-      margin-right: 10px; 
-      margin-left: 5px;
+    .ui-element {
+      margin-top: 2px;
+      margin-right: 3px; 
+      margin-bottom: 2px;
+      margin-left: 3px;
     }
     #marker-text-overlay {
       background-color: white; 
@@ -51,11 +53,15 @@
       border-style: solid;
       border-width: 1px;
       display: none;
+      overflow-y: scroll; 
+      overflow-x: scroll;
+      height: 90vh;
+      max-width: 80%;
     }
     #hide-data-container {
       position: absolute;
       top: 10px;
-      right: 0px;
+      right: 10px;
     }
     </style>
   <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
@@ -64,16 +70,19 @@
 <body onload="initMap()">
   <div id="map"></div>
   <div id="map-header">
-    <span>
+    <span class="ui-element">
       <label>Device EUI: </label>
       <input type="text" id="deviceEUI" value="20635F00C50000AF">
     </span>
-    <button onclick="loadMarkers()">Load Markers</button>
-    <span>
+    <button class="ui-element" onclick="loadMarkers()">Load Markers</button>
+    <span class="ui-element">
       <input type="checkbox" id="showCircles" checked onclick="showCircles()"> 
       <label>Show accuracy</label>
     </span>
-    <button onclick="document.getElementById('data-container').style.display='block';">Show messages</button>
+    <button 
+      class="ui-element" 
+      onclick="document.getElementById('data-container').style.display='block';"
+    >Show messages</button>
   </div>
   <div id="map-footer">
     <img height="30" src="assets/marker-icon-green.png" \><span>WiFi</span>
