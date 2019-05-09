@@ -43,7 +43,7 @@ module.exports.listResolvedLocations = function listResolvedLocations (req, res,
         .collection(dbCollName)
         .find(filter)
         .sort({$natural: -1})
-        .limit(25)
+        .limit(100)
         .toArray( (err, result) => {
             if (err) {
                 res.status(500).send({message: {text: `MongoError: ${err.message}`, code:500}});
