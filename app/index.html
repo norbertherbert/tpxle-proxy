@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+  <style>
+    body {
+      margin: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    input[type='checkbox'] {
+      margin-left: 25px;
+    }
+    .map-header {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: left /* space-around; */
+    }
+    .map-footer {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: left;
+    }
+    #map {
+      width: 100%;
+      height: 75vh;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    #marker-text-overlay {
+      background-color: white; 
+      border-radius: 10px; 
+      border: 1px solid black; 
+      padding: 5px 10px;
+    }
+    #data-container {
+      margin: 10px;
+      padding: 10px;
+      border-style: solid;
+      border-width: 1px;
+    }
+    </style>
+  <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+  <title>TPXLE Demo</title>
+</head>
+<body onload="initMap()">
+  <h1>ThingPark X Location Engine Demo App</h1>
+  <div class="map-header">
+    <span>
+      <label>Device EUI: </label>
+      <input type="text" id="deviceEUI" value="20635F00C50000AF">
+      <button onclick="loadMarkers()">Load/Reload Markers</button>
+    </span>
+    <span>
+      <input type="checkbox" id="showCircles" checked onclick="showCircles()"> 
+      <label>Show standard deviation radius</label>
+    </span>
+  </div>
+  <div id="map"></div>
+  <div id="marker-text-overlay"></div>
+  <div class="map-footer">
+    <span><img height="50" src="assets/marker-icon-green.png" \> WiFi</span>
+    <span><img height="50" src="assets/marker-icon-yellow.png" \> LP-GPS</span>
+    <span><img height="50" src="assets/marker-icon-red.png" \> GPS</span>
+  </div>
+
+  
+  <div id="data-container">
+    <label>Map data:</label>
+    <pre id="data"></pre>
+  </div>
+
+
+
+
+<script type="text/javascript">
+
+  // import 'ol/ol.css';
+  // import {Map, View, Overlay, Feature} from 'ol';
+  // import {Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
+  // import {OSM  as OSMSource, Vector as VectorSource} from 'ol/source';
+  // import {Point} from 'ol/geom';
+  // import {fromLonLat} from 'ol/proj';
+  // import {Style, Icon, Circle, Fill, Stroke} from 'ol/style';
+
+  const Map = ol.Map;
+  const View = ol.View; 
+  const Overlay = ol.Overlay;
+  const Feature = ol.Feature;
+  const TileLayer = ol.layer.Tile;
+  const VectorLayer = ol.layer.Vector;
+  const OSMSource = ol.source.OSM;
+  const VectorSource = ol.source.Vector;
+  const Point = ol.geom.Point;
+  const fromLonLat = ol.proj.fromLonLat;
+  const Style = ol.style.Style;
+  const Icon = ol.style.Icon;
+  const Circle = ol.style.Circle;
+  const Fill = ol.style.Fill;
+  const Stroke = ol.style.Stroke;
+
+  const defaultMapCenter = [11.6739826, 47.0622886];
+  const defaultZoom = 5;
+  const url = 'https://nano-things.net/tpxle-proxy/latest/api/app_server';
+  let points = [];
+
+
+  let markerStyleFunction = (feature, resolution) => {
+      let imgSource = 'assets/';
+      switch (feature.get('rawPositionType')) {
+          case 'RawPositionByWifiSolver':
+              imgSource += 'marker-icon-green.png';
+              break;
+          case 'RawPositionByAgpsSolver':
+              imgSource += 'marker-icon-yellow.png';
+              break;
+          case 'RawPositionByGpsSolver':
+              imgSource += 'marker-icon-red.png';
+              break;
+          default:
+              imgSource += 'marker-icon-gray.png';
+              break;
+      }
+      return new Style({
+          image: new Icon( {
+              anchor: [0.5, 1.0],
+              anchorXUnits: 'fraction', // 'pixels',
+              anchorYUnits: 'fraction', // 'pixels',
+              opacity: 1.0,
+              scale: 0.7,
+              src: imgSource
+          })
+      })
+  };
+
+  const greenCircleBackground  = [0x57, 0xc4, 0x51, 0.1]; // #57c451
+  const greenCircleStroke      = [0x31, 0x85, 0x2c, 0.2]; // #31852c
+  const yellowCircleBackground = [0xa9, 0xae, 0x39, 0.1]; // #a9ae39
+  const yellowCircleStroke     = [0x79, 0x7c, 0x29, 0.2]; // #797c29
+  const redCircleBackground    = [0xd7, 0x3e, 0x3e, 0.1]; // #d73e3e
+  const redCircleStroke        = [0x9a, 0x1f, 0x1f, 0.2]; // #9a1f1f
+  const grayCircleBackground   = [0x94, 0x94, 0x94, 0.1]; // #949494
+  const grayCircleStroke       = [0x6a, 0x6a, 0x6a, 0.2]; // #6a6a6a
+
+  let circleStyleFunction = (feature, resolution) => {
+      let colorCircleBackground = [];
+      let colorCircleStroke = [];
+      switch (feature.get('rawPositionType')) {
+          case 'RawPositionByWifiSolver':
+              colorCircleBackground = greenCircleBackground;
+              colorCircleStroke     = greenCircleStroke;
+              break;
+          case 'RawPositionByAgpsSolver':
+              colorCircleBackground = yellowCircleBackground;
+              colorCircleStroke     = yellowCircleStroke;
+              break;
+          case 'RawPositionByGpsSolver':
+              colorCircleBackground = redCircleBackground;
+              colorCircleStroke     = redCircleStroke;
+              break;
+          default:
+              colorCircleBackground = grayCircleBackground;
+              colorCircleStroke     = grayCircleStroke;
+          break;
+      };
+      return new Style({
+          image: new Circle( {
+              radius: feature.get('radius')/resolution,
+              fill: new Fill({color: colorCircleBackground}),
+              stroke: new Stroke({color: colorCircleStroke, width: 1}), 
+              anchor: [0.5, 0.5],
+              anchorXUnits: 'fraction', // 'pixels',
+              anchorYUnits: 'fraction', // 'pixels',
+          })
+      });
+  };
+
+  let markers = [];
+  let circles = [];
+  let markersVectorSource = new VectorSource({ 
+      features: markers 
+  });
+  let circlesVectorSource = new VectorSource({ 
+      features: circles 
+  });
+  let markersVectorLayer = new VectorLayer({
+      source: markersVectorSource,
+      style: markerStyleFunction,
+      zIndex: 10
+  });
+  let circlesVectorLayer = new VectorLayer({
+      source: circlesVectorSource,
+      style: circleStyleFunction,
+      zIndex: 5
+  });
+
+  let map;
+
+
+  function initMap() {
+
+      map = new Map({
+          target: 'map',
+          layers: [
+              new TileLayer({
+              source: new OSMSource()
+              })
+          ],
+          view: new View({
+              center: fromLonLat(defaultMapCenter),
+              zoom: defaultZoom
+          }),
+      });
+
+      map.addLayer(circlesVectorLayer);
+      map.addLayer(markersVectorLayer);
+
+      let markerTextElement = document.getElementById('marker-text-overlay');
+      let markerTextOverlay = new Overlay({
+          element: markerTextElement,
+          positioning: 'bottom-center'
+      });
+      map.on('click', function(event) {
+          var features = [];
+          map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
+              if(layer === markersVectorLayer) {
+                  features.push(feature);
+              }
+          });
+          let info = features.map( (f) => f.get('text') )
+          if (info.length > 0) {
+              markerTextElement.innerHTML = info.join('<br>');
+              markerTextOverlay.setPosition(event.coordinate);
+              map.addOverlay(markerTextOverlay);
+          } else {
+              map.removeOverlay(markerTextOverlay);
+          }
+      });
+  }
+
+
+
+  function loadMarkers() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+      if (xhttp.status != 200) {
+        alert(`Error ${xhttp.status}: ${xhttp.statusText}`);
+        return;
+      }
+      markers = [];
+      circles = [];
+      points = JSON.parse(this.responseText);
+      if (points && (points.length > 0)) {
+        let v = map.getView();
+        let z = v.getZoom();
+        v.animate({
+          zoom: z - 1,
+          duration: 600
+        }, {
+          center: fromLonLat(points[0].coordinates),
+          zoom: 17,
+          duration: 1400
+        });
+
+        for (let i=(points.length-1); i>=0; i--) {
+          try {
+              if (points[i].resolvedTracker.messageType === 'Position Message') {
+                let marker = new Feature({
+                  geometry: new Point( fromLonLat(points[i].coordinates) ),
+                  text: `${points[i].time}; ${points[i].deviceEUI}`,
+                  radius: points[i].horizontalAccuracy,
+                  rawPositionType: points[i].rawPosition.rawPositionType
+                });
+                marker.setStyle(markerStyleFunction);
+                markers.push(marker);
+                let circle = new Feature({
+                  geometry: new Point( fromLonLat(points[i].coordinates) ),
+                  text: `${points[i].time}; ${points[i].deviceEUI}`,
+                  radius: points[i].horizontalAccuracy,
+                  rawPositionType: points[i].rawPosition.rawPositionType
+                });
+                circle.setStyle(circleStyleFunction);
+                circles.push(circle);
+              }
+          } catch (err) { continue }
+        }
+      }
+//      alert(JSON.stringify(markers));
+      markersVectorSource.clear(true);
+      markersVectorSource.addFeatures(markers);
+      circlesVectorSource.clear(true);
+      circlesVectorSource.addFeatures(circles);
+      document.getElementById("data").innerHTML = JSON.stringify(points, null, 2);
+    };
+    let deviceEUI = document.getElementById('deviceEUI').value;
+    let urlWithParam;
+    if (deviceEUI) { 
+      urlWithParam = `${url}?deviceEUI=${deviceEUI.toUpperCase()}`
+    } else {
+      urlWithParam = url;
+    }
+    xhttp.open("GET", urlWithParam, true);
+    xhttp.setRequestHeader("accept", "application/json");
+    xhttp.send();
+  }
+
+  function showCircles() {
+    let checked = document.getElementById('showCircles').checked;
+    if (checked) {
+      map.addLayer(circlesVectorLayer);
+    } else {
+      map.removeLayer(circlesVectorLayer);
+    }
+    // circlesVectorLayer.visible = checked;
+  }
+
+</script>
+
+
+
+
+</body>
+</html>
