@@ -43,6 +43,8 @@ const oasOptions = {
 
 const app = express();
 
+app.use(`${CONFIG.server.path}/app`, express.static('app'))
+
 // This sets access control origin to * that helps testing java script apps from localhost
 app.options(`${CONFIG.server.path}/*`, function(req, res) {
 	res.set({
@@ -76,10 +78,16 @@ oasTools.initialize(oasDoc, app, function() {
 			+ '/latest/api'
 		);
 		logger.info(
-			'API docs (Swagger UI) available on http://localhost:'
+			'API docs (Swagger UI) is available on http://localhost:'
 			+ CONFIG.server.port 
 			+ oasOptions.docs.swaggerUiPrefix
 			+ oasOptions.docs.swaggerUi
+		);
+		logger.info(
+			'Application server is available on http://localhost:'
+			+ CONFIG.server.port 
+			+ oasOptions.docs.swaggerUiPrefix
+			+ '/app/index.html'
 		);
 	})
 });
