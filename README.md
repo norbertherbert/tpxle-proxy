@@ -2,7 +2,10 @@
 'tpxle-proxy' is an API proxy for Actility ThingPark X Location Engine to connect foreign Network Servers (it is also called Operator Interface). For details please study 
 [/docs/DX_Location_API_flows_v1.1.pdf](https://github.com/norbertherbert/tpxle-proxy/blob/master/docs/DX_Location_API_flows_v1.1.pdf).
 
-If you want to test this server without installing it on your cloud, visit this [link](https://nano-things.net/tpxle-proxy/docs/). Please note that the server under that link is operated in a best effort manner and may not be awailable all the time.
+If you want to test this server without installing it on your cloud, visit this [demo server](https://nano-things.net/tpxle-proxy/docs/). Please note that the server under that link is operated in a best effort manner and may not be available all the time.
+1. Configure your devices with the online [Abeeway device configurator](https://nano-things.net/abeeway-demo) tool.
+1. Set up you network server so that it forwards uplink messages to the appropriate API endpoint of the demo server. For example in case of Actility ThingPark Wireles or ThingPark Enterprice SaaS/OCP network servers the API endpoint is https://nano-things.net/tpxle-proxy/latest/api/uplink_actility
+1. See the locations of your trackers on the map presented by the basic [demo app](https://nano-things.net/tpxle-proxy/app) of the demo server. The app is a static web page relaying Open Streetmap and Openlayers. You can see and save the source code using your web browser.
 
 ### Installation:
 * Install and configure dependencies: 
