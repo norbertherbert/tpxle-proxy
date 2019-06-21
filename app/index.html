@@ -308,7 +308,8 @@
           zoom: z - 1,
           duration: 600
         }, {
-          center: fromLonLat(points[0].coordinates),
+          // center: fromLonLat(points[0].coordinates),
+          center: fromLonLat(points[0].rawPosition.coordinates),
           zoom: 17,
           duration: 1400
         });
@@ -317,7 +318,8 @@
           try {
               if (points[i].resolvedTracker.messageType === 'Position Message') {
                 let marker = new Feature({
-                  geometry: new Point( fromLonLat(points[i].coordinates) ),
+                  // geometry: new Point( fromLonLat(points[i].coordinates) ),
+                  geometry: new Point( fromLonLat(points[i].rawPosition.coordinates) ),
                   text: `${points[i].time}; ${points[i].deviceEUI}`,
                   radius: points[i].horizontalAccuracy,
                   rawPositionType: points[i].rawPosition.rawPositionType
@@ -325,7 +327,8 @@
                 marker.setStyle(markerStyleFunction);
                 markers.push(marker);
                 let circle = new Feature({
-                  geometry: new Point( fromLonLat(points[i].coordinates) ),
+                  // geometry: new Point( fromLonLat(points[i].coordinates) ),
+                  geometry: new Point( fromLonLat(points[i].rawPosition.coordinates) ),
                   text: `${points[i].time}; ${points[i].deviceEUI}`,
                   radius: points[i].horizontalAccuracy,
                   rawPositionType: points[i].rawPosition.rawPositionType
