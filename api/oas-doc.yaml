@@ -261,6 +261,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
+  /uplink_kerlink:
+    post:
+      tags:
+        - Network Servers
+      summary: Receive uplinlk message from Kerlink Network Server
+      description: This endpoint receives an uplink message from Kerlink Network Server, transforms it to the right format and forwards it to ThingPark Location Solver.
+      x-swagger-router-controller: proxyNsLs
+      operationId: uplinkKerlink
+      requestBody:
+        description: The message body sent by the Network Server.
+        x-name: body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NsKerlink'
+      responses:
+        '200':
+          description: \[200 OK\] The message was successfully received.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: \[400 Bad Request\] Invalid parameters supplied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '403':
+          description: \[403 Forbidden\] Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '500':
+          description: \[500 Internal Server Error\] The server encountered an unexpected
+            condition which prevented it from fulfilling the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
 
 components:
 
@@ -902,7 +944,97 @@ components:
           description: frame snr, in dB, one decimal place
           type: number
           example: -7.25
-     
+
+    NsKerlink:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '5da03ee3a96ab200018d5f3c'
+        endDevice:
+          type: object
+          properties:
+            devEui:
+              type: string
+              example: '20635F0108001158'
+            devAddr:
+              type: string
+              example: '0204E05E'
+            cluster:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 435
+        fPort:
+          type: integer
+          example: 17
+        fCntDown:
+          type: integer
+          example: 1
+        fCntUp:
+          type: integer
+          example: 9
+        adr:
+          type: boolean
+          example: true
+        confirmed:
+          type: boolean
+          example: false
+        encrypted:
+          type: boolean
+          example: false
+        payload:
+          type: string
+          example: '0a50009e0000'
+        recvTime:
+          type: integer
+          example: 1570782946959
+        classB:
+          type: boolean
+          example: false
+        delayed:
+          type: boolean
+          example: false
+        ulFrequency:
+          type: number
+          example: 868.5
+        modulation:
+          type: string
+          example: 'LORA'
+        dataRate:
+          type: string
+          example: 'SF10BW125'
+        codingRate:
+          type: string
+          example: '4/5'
+        gwCnt:
+          type: integer
+          example: 1
+        gwInfo:
+          type: array
+          items:
+            type: object
+            properties:
+              gwEui:
+                type: string 
+                example: '7276FF0039030872'
+              rfRegion: 
+                type: string 
+                example: 'EU868'
+              rssi: 
+                type: integer 
+                example: -47
+              snr: 
+                type: integer 
+                example: 7.5
+              channel: 
+                type: integer 
+                example: 7
+              radioId: 
+                type: integer 
+                example: 1
+
     MessageResponse:
       type: object
       properties:

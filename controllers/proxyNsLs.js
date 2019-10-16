@@ -7,6 +7,7 @@ const CONFIG = require(`${appRoot}/config/config`);
 const interfaceActility = require('./interface-actility');
 const interfaceTTN = require('./interface-ttn');
 const interfaceLoriot = require('./interface-loriot');
+const interfaceKerlink = require('./interface-kerlink');
 
 module.exports.uplinkActility = function uplinkActility (req, res, next) {
     let forwardBody = interfaceActility.ns2ls(req.body);
@@ -33,6 +34,15 @@ module.exports.uplinkLoriot = function uplinkLoriot (req, res, next) {
 module.exports.downlinkLoriot = function downlinkLoriot (req, res, next) {
     let forwardBody = interfaceLoriot.ls2ns(req.body);
     forward(res, forwardBody, CONFIG.nsLoriot);
+}
+
+module.exports.uplinkKerlink = function uplinkKerlink (req, res, next) {
+    let forwardBody = interfaceKerlink.ns2ls(req.body);
+    forward(res, forwardBody, CONFIG.lsFeeds);
+}
+module.exports.downlinkKerlink = function downlinkKerlink (req, res, next) {
+    let forwardBody = interfaceKerlink.ls2ns(req.body);
+    forward(res, forwardBody, CONFIG.nsTTN);
 }
 
 function forward (res, forwardBody, forwardOptions) {
