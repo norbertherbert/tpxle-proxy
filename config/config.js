@@ -18,7 +18,8 @@ const CONFIG = {
 		dbUrl: 'mongodb://localhost:27017',
 		dbName: 'tpxle-proxy',
 		dbOptions: { 
-			useNewUrlParser: true 
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
 		}
 	},
 	// ThingPark Location Solver - /feeds API

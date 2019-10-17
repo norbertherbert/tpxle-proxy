@@ -1,0 +1,35 @@
+{
+    "deviceEUI": "",
+    "time": "",
+    "coordinates": [],
+    "solverInput": {
+        "solverInputType": "FeedInputForGpsSolver",
+        "sequenceNumber": 1,
+        "port": 1,
+        "receptionTime": "",
+        "SF": 12,
+        "packets": [
+            {
+                "baseStationId": "0805022D",
+                "antennaId": 0,
+                "antennaCoordinates": [7.0513, 43.6181],
+                "antennaHeight": 150,
+                "SNR": 10,
+                "RSSI": -29,
+                "barometerMeasure": 0,
+                "arrivalSeconds": 1,
+                "arrivalAdditionalNanos": 7275
+            }
+        ],
+        "dynamicMotionState": "string",
+        "temperatureMeasure": 0,
+        "accelerometerMeasures": [],
+        "gyroscopeMeasures": [],
+        "barometerMeasure": 0,
+        "lastContext": "string"
+    },
+    "payload": {
+        "deviceProfileId": "ABEEWAY/MICRO",
+        "payloadEncoded": ""
+    }
+}

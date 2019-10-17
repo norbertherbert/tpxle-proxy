@@ -13,9 +13,13 @@ module.exports.saveResolvedLocation = function saveResolvedLocation (req, res, n
             logger.error(`MongoError: ${err.message}`);
             return;
         }
-        client.db(CONFIG.db.dbName).collection(dbCollName).insertOne(req.body, function(result) {
-            assert.equal(err, null);
-
+        client.db(CONFIG.db.dbName).collection(dbCollName).insertOne(req.body, function(err, result) {
+            if (err) {
+                res.status(500).send({message: {text: `MongoError: ${err.message}`, code:500}});
+                logger.error(`MongoError: ${err.message}`);
+                return;
+            }
+    
             res.status(200).send({message: {text: 'RESOLVED LOCATION RECEIVED AND SAVED BY THE AS', code: 200}});
             client.close();
 
