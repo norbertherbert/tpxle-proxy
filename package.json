@@ -10,12 +10,12 @@
   "license": "ISC",
   "repository": "https://github.com/norbertherbert/tpxle-proxy.git",
   "dependencies": {
-    "abeeway-driver": "^1.4.0",
+    "abeeway-driver": "^1.5.0",
     "app-root-path": "^2.2.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "js-yaml": "^3.13.1",
-    "mongodb": "^3.3.2",
+    "mongodb": "^3.3.3",
     "oas-tools": "^2.1.7",
     "winston": "^3.2.1"
   }
