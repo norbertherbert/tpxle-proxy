@@ -1,6 +1,6 @@
 {
   "name": "tpls-proxy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Interface proxy between LoRaWAN NS and ThingPark Location Solver",
   "main": "app.js",
   "scripts": {
